@@ -84,6 +84,25 @@ class seniorOperation(BaseOperator):
         cos_ans = self.cos_func()
         ans = sin_ans / cos_ans
         return ans
+      
+    def operation(self):
+        """
+        调用运算函数,并返回结果
+        """
+        if self.__operator_status == 1:
+            return self.__add()
+        elif self.__operator_status == 2:
+            return self.__substract()
+        elif self.__operator_status == 3:
+            return self.__multi()
+        elif self.__operator_status == 4:
+            return self.__divide()
+        elif self.__operator_status == 5:
+            return self.sin_func()
+        elif self.__operator_status == 6:
+            return self.cos_func()
+        elif self.__operator_status == 7:
+            return self.tan_func()
 
 """
  for test
