@@ -11,10 +11,14 @@
 
 from baseOperator import BaseOperator
 
+pi = 3.1415926
+
+
 class seniorOperation(BaseOperator):
     """
     高级运算符
     """
+
     def exponential(self):
         """
         幂函数
@@ -27,13 +31,13 @@ class seniorOperation(BaseOperator):
             ex = ex * base
         self.clearData()
         return ex
-    
+
     def __factorial(self, num):
         """
         阶乘计算
         """
         ans = 1
-        for i in range(1, num+1):
+        for i in range(1, num + 1):
             ans = ans * i
         return ans
 
@@ -42,6 +46,10 @@ class seniorOperation(BaseOperator):
         sin函数
         """
         num = self.data1_getter()
+        k = num // (2 * pi)
+        num = num - 2 * pi * k
+        if num > pi:
+            num = pi - num
         ans = 0.0
         for i in range(1, 13, 4):
             self.refresh_data_1(num)
@@ -61,6 +69,10 @@ class seniorOperation(BaseOperator):
         """
         ans = 0.0
         num = self.data1_getter()
+        k = num // (2 * pi)
+        num = num - 2 * pi * k
+        if num > pi:
+            num = 2 * pi - num
         for i in range(0, 12, 4):
             self.refresh_data_1(num)
             self.refresh_data_2(i)
@@ -84,37 +96,21 @@ class seniorOperation(BaseOperator):
         cos_ans = self.cos_func()
         ans = sin_ans / cos_ans
         return ans
-      
-    def operation(self):
-        """
-        调用运算函数,并返回结果
-        """
-        if self.__operator_status == 1:
-            return self.__add()
-        elif self.__operator_status == 2:
-            return self.__substract()
-        elif self.__operator_status == 3:
-            return self.__multi()
-        elif self.__operator_status == 4:
-            return self.__divide()
-        elif self.__operator_status == 5:
-            return self.sin_func()
-        elif self.__operator_status == 6:
-            return self.cos_func()
-        elif self.__operator_status == 7:
-            return self.tan_func()
+
 
 """
  for test
 """
-"""
 if __name__ == "__main__":
     ca = seniorOperation()
-    ca.refresh_data_1(1.024)
+    from math import pi
+
+    ca.refresh_data_1(4.14)
     ca.refresh_data_2(-1)
     ca.refresh_status(3)
-    print(ca.base_operation())
-"""
-
-    
-    
+    print(ca.operation())
+    print(ca.sin_func())
+    ca.refresh_data_1(4.14)
+    ca.refresh_data_2(-1)
+    ca.refresh_status(3)
+    print(ca.cos_func())

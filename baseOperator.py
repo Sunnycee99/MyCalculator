@@ -1,5 +1,4 @@
 """
-Create by LYL
 base operation model
 """
 
@@ -13,7 +12,8 @@ class BaseOperator:
     3: 相乘
     4: 相除
     """
-    __operator_status = None   # 私有变量，表示当前需进行的运算操作
+
+    __operator_status = None  # 私有变量，表示当前需进行的运算操作
     __data_1 = None
     __data_2 = None
     __saved_ans = None
@@ -22,34 +22,23 @@ class BaseOperator:
         """
         两数相加
         """
-        ans = self.__data_1 + self.__data_2
-        self.ans_setter(ans)
-        return 
+        return self.__data_1 + self.__data_2
 
     def __substract(self):
         """
         两数相减
         """
-        ans = self.__data_1 - self.__data_2
-        self.ans_setter(ans)
-        return ans
+        return self.__data_1 - self.__data_2
 
     def __multi(self):
         """
         两数相乘
         """
-        ans = self.__data_1 * self.__data_2
-        self.ans_setter(ans)
-        return ans
-    
+        return self.__data_1 * self.__data_2
+
     def __divide(self):
-        """
-        两数相除
-        """
-        ans = self.__data_1 / self.__data_2
-        self.ans_setter(ans)
-        return ans
-        
+        return self.__data_1 / self.__data_2
+
     def refresh_data_1(self, new_data):
         """
         data_1赋值
@@ -79,7 +68,7 @@ class BaseOperator:
         操作私有变量operator_status
         """
         self.__operator_status = new_status
-    
+
     def ans_setter(self, new_ans):
         """
         存储计算结果
@@ -101,5 +90,15 @@ class BaseOperator:
         self.refresh_status(None)
         self.ans_setter(None)
 
-
-
+    def operation(self):
+        """
+        调用运算函数,并返回结果
+        """
+        if self.__operator_status == 1:
+            return self.__add()
+        elif self.__operator_status == 2:
+            return self.__substract()
+        elif self.__operator_status == 3:
+            return self.__multi()
+        elif self.__operator_status == 4:
+            return self.__divide()

@@ -1,80 +1,80 @@
 import PySimpleGUI as sg
-import seniorOperator
+from math import pi
+from seniorOperator import seniorOperation
+from baseOperator import BaseOperator
+import re
 
 
-class interfaceOperation:
-    op = seniorOperator()
-    def __init__(self, window):
-        self.window = window
-        self.content = ""
-
-    def clearData(self):
-        self.op.clearData()
-        self.window["INPUT"].update("")
-
-    def add_number(self, number):
-        window = self.window
-        self.window["INPUT"].update(window["INPUT"].get() + number)
-        self.content = self.content + number
-        if self.op.status_getter() == None:
-            self.op.refresh_data_1(number)
-        else:
-            self.op.refresh_data_2(number)
-
-    def add_operator(self, operator):
-        window = self.window
-        self.window["INPUT"].update(window["INPUT"].get() + operator)
-        self.content = self.content + operator
-        self.op.refresh_status(operator)
-
-    def add_function(self, function):
-        window = self.window
-        self.window["INPUT"].update(window["INPUT"].get() + function)
-        self.content = self.content + function
-
-    def operation(self):
-        try:
-            return str(eval(self.window["INPUT"].get()))
-        except ValueError as ex:
-            print(ex + ",请检查输入")
+def myfloat(x):
+    if x != "pi":
+        return float(x)
+    else:
+        return pi
 
 
 def calculate(inputs):
     mybutton = lambda x: sg.B(x, size=(5, 1))
     layout = [
         [sg.Input(inputs, key="INPUT")],
-        [mybutton(f"{i}") for i in range(7, 10)]
-        + [mybutton("+"), mybutton("("), mybutton(")"), mybutton("^")],
+        [mybutton(f"{i}") for i in range(7, 10)] + [mybutton("+")],
         [mybutton(f"{i}") for i in range(4, 7)]
-        + [mybutton("-"), mybutton("sin"), mybutton("asin"), mybutton("pi")],
+        + [mybutton("-"), mybutton("sin"), mybutton("pi")],
         [mybutton(f"{i}") for i in range(1, 4)]
-        + [mybutton("*"), mybutton("cos"), mybutton("acos"), mybutton("C")],
+        + [mybutton("*"), mybutton("cos"), mybutton("C")],
         [
             mybutton("."),
             mybutton("0"),
             mybutton("="),
             mybutton("/"),
             mybutton("tan"),
-            mybutton("atan"),
+            mybutton("L"),
         ],
     ]
     window = sg.Window("响存计算器", layout)
-    ca = interfaceOperation(window)
+    so = seniorOperation()
     while 1:
         event, values = window.read()
         if event in (None, "Exit"):
             break
         if event == "=":
-            return ca.operation()
+            content = window["INPUT"].get()
+            try:
+                operator = re.search("\+|\-|\*|/", content).group()
+                data1, data2 = content.split(operator)
+            except:
+                breakpoint()
+            if operator == "+":
+                num = 1
+            elif operator == "-":
+                num = 2
+            elif operator == "*":
+                num = 3
+            elif operator == "/":
+                num = 4
+            so.refresh_status(num)
+            so.refresh_data_1(myfloat(data1))
+            so.refresh_data_2(myfloat(data2))
+            res = so.operation()
+            window["INPUT"].update(myfloat(res))
+            return res
         elif event == "C":
-            ca.clearData()
-        elif event == ["1", "2", "3", "4", "5", "6", "7", "8", "9"]:
-            ca.add_number(event)
-        elif event == ["+", "-", "*", "/", "(", ")"]:
-            ca.add_operator(event)
+            so.clearData()
+            window["INPUT"].update("")
+        elif event == "L":
+            content = window["INPUT"].get()
+            window["INPUT"].update(content + so.ans_getter())
         else:
-            ca.add_function(event)  # 添加类似sin，cos这样的函数
-
+            if event in "sin":
+                so.refresh_data_1(myfloat(window["INPUT"].get()))
+                return so.sin_func()
+            if event == "cos":
+                so.refresh_data_1(myfloat(window["INPUT"].get()))
+                return so.cos_func()
+            if event == "tan":
+                so.refresh_data_1(myfloat(window["INPUT"].get()))
+                return so.tan_func()
+            else:
+                window["INPUT"].update(window["INPUT"].get() + event)
     window.close()
 
 
