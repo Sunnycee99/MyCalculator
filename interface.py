@@ -1,24 +1,31 @@
 import PySimpleGUI as sg
-from math import acos, asin, atan, sin, cos, tan, pi
+import seniorOperator
 
 
-class seniorOperator:
+class interfaceOperation:
+    op = seniorOperator()
     def __init__(self, window):
         self.window = window
         self.content = ""
 
     def clearData(self):
+        self.op.clearData()
         self.window["INPUT"].update("")
 
     def add_number(self, number):
         window = self.window
         self.window["INPUT"].update(window["INPUT"].get() + number)
         self.content = self.content + number
+        if self.op.status_getter() == None:
+            self.op.refresh_data_1(number)
+        else:
+            self.op.refresh_data_2(number)
 
     def add_operator(self, operator):
         window = self.window
         self.window["INPUT"].update(window["INPUT"].get() + operator)
         self.content = self.content + operator
+        self.op.refresh_status(operator)
 
     def add_function(self, function):
         window = self.window
@@ -52,7 +59,7 @@ def calculate(inputs):
         ],
     ]
     window = sg.Window("响存计算器", layout)
-    ca = seniorOperator(window)
+    ca = interfaceOperation(window)
     while 1:
         event, values = window.read()
         if event in (None, "Exit"):
