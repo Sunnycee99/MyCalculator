@@ -10,7 +10,7 @@ class MainWindow(QMainWindow):
         super(MainWindow, self).__init__(parent=None)
         self.ui = UiMainWindow()
         self.ui.setup_ui(self)
-        self.mode = False  # 标志位，False-角度模式 True-弧度模式
+        self.mode = True  # 标志位，False-角度模式 True-弧度模式
         self.is_compute = False  # 标志位，是否进行了运算
         self.is_error = False  # 标志位，运算是否出错，出错了运算按钮将锁死
         self.ui.number_0_button.clicked.connect(lambda: self.display_number(0))
@@ -39,7 +39,7 @@ class MainWindow(QMainWindow):
         改变输入模式，角度模式或弧度模式
         :return: None
         """
-        self.mode = ~self.mode
+        self.mode = True
         if self.mode:
             self.ui.mode_display_box.setText("Radia")
         else:

@@ -84,7 +84,7 @@ class UiMainWindow(object):
         self.mode_display_box = QtWidgets.QLabel(self.gridLayoutWidget)
         self.mode_display_box.setObjectName("mode_display_box")
         self.mode_display_box.setFixedHeight(70)
-        self.mode_display_box.setText("Angle")  # 设置显示框默认显示内容
+        self.mode_display_box.setText("Radia")  # 设置显示框默认显示内容
         self.mode_display_box.setAlignment(QtCore.Qt.AlignCenter)
         self.mode_display_box.setStyleSheet("color: rgb(245,222,179);"
                                             "font: 300 18pt \"Arial\";"
